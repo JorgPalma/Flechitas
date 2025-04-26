@@ -5,18 +5,23 @@ let currentArrow;
 let isTrap = false;
 let isPause = false;
 let isSpace = false;
+let isLeftRight = false;
+let isUpDown = false;
 let keyPressed = false;
 let pauseResolved = false;
+let pressedKeys = new Set();
 
 const arrows = [
-  { key: "ArrowUp", icon: '<i class="fa-regular fa-circle-up"></i>' },
-  { key: "ArrowDown", icon: '<i class="fa-regular fa-circle-down"></i>' },
-  { key: "ArrowLeft", icon: '<i class="fa-regular fa-circle-left"></i>' },
-  { key: "ArrowRight", icon: '<i class="fa-regular fa-circle-right"></i>' }
+  { key: "ArrowUp", icon: '<i class="fa-solid fa-arrow-up"></i>' },
+  { key: "ArrowDown", icon: '<i class="fa-solid fa-arrow-down"></i>' },
+  { key: "ArrowLeft", icon: '<i class="fa-solid fa-arrow-left"></i>' },
+  { key: "ArrowRight", icon: '<i class="fa-solid fa-arrow-right"></i>' }
 ];
 
 const pauseArrow = { key: "Pause", icon: '<i class="fa-solid fa-pause"></i>' };
-const spaceArrow = { key: "Space", icon: '<i class="fa-solid fa-minus"></i>' }; 
+const spaceArrow = { key: "Space", icon: '<i class="fa-solid fa-minus"></i>' };
+const leftRightArrow = { key: "LeftRight", icon: '<i class="fa-solid fa-arrows-left-right"></i>' };
+const upDownArrow = { key: "UpDown", icon: '<i class="fa-solid fa-arrows-up-down"></i>' };
 
 function mapWASDToArrow(key) {
   switch (key.toLowerCase()) {
@@ -50,12 +55,23 @@ function setRandomArrow() {
   isTrap = false;
   isPause = false;
   isSpace = false;
+  isLeftRight = false;
+  isUpDown = false;
   pauseResolved = false;
+  pressedKeys.clear();
 
+  const shouldAddUpDown = score >= 75 && Math.random() < 0.15;
+  const shouldAddLeftRight = score >= 75 && Math.random() < 0.15;
   const shouldAddSpace = score >= 25 && Math.random() < 0.15;
-  const shouldAddPause = score >= 50 && Math.random() < 0.1;
+  const shouldAddPause = score >= 50 && Math.random() < 0.15;
 
-  if (shouldAddSpace) {
+  if (shouldAddUpDown) {
+    currentArrow = upDownArrow;
+    isUpDown = true;
+  } else if (shouldAddLeftRight) {
+    currentArrow = leftRightArrow;
+    isLeftRight = true;
+  } else if (shouldAddSpace) {
     currentArrow = spaceArrow;
     isSpace = true;
   } else if (shouldAddPause) {
@@ -63,7 +79,7 @@ function setRandomArrow() {
     isPause = true;
   } else {
     currentArrow = arrows[Math.floor(Math.random() * arrows.length)];
-    isTrap = score >= 75 && Math.random() < 0.4;
+    isTrap = score >= 100 && Math.random() < 0.15;
   }
 
   arrowIcon.innerHTML = currentArrow.icon;
@@ -129,6 +145,7 @@ function increaseScore() {
 }
 
 function showGameOver() {
+  clearInterval(timerInterval);
   gameOverElement.style.display = "block";
   scoreFinal.textContent = score;
   gameContainer.style.display = "none";
@@ -154,6 +171,7 @@ function handleKeyPress(event) {
   if (!gameContainer.style.display || gameContainer.style.display === "none") return;
 
   keyPressed = true;
+  pressedKeys.add(event.key);
 
   if (isPause) return;
 
@@ -164,6 +182,26 @@ function handleKeyPress(event) {
       clearInterval(timerInterval);
       showGameOver();
     }
+    return;
+  }
+
+  if (isLeftRight) {
+    if (pressedKeys.has("ArrowLeft") && pressedKeys.has("ArrowRight")) {
+      increaseScore();
+    }
+    return;
+  }
+
+  if (isUpDown) {
+    if (pressedKeys.has("ArrowUp") && pressedKeys.has("ArrowDown")) {
+      increaseScore();
+    }
+    return;
+  }
+
+  if (event.key === " " || event.code === "Space") {
+    clearInterval(timerInterval);
+    showGameOver();
     return;
   }
 
@@ -178,4 +216,9 @@ function handleKeyPress(event) {
   }
 }
 
+function handleKeyUp(event) {
+  pressedKeys.delete(event.key);
+}
+
 document.addEventListener("keydown", handleKeyPress);
+document.addEventListener("keyup", handleKeyUp);

@@ -8,10 +8,19 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Juego de la flechita uwu</h1>
+    <h1>Flechitas</h1>
     <div id="start-screen">
+        <h2>Instrucciones</h2>
+        <ul style="text-align: left;">
+            <li><span class="regular bg-primary"><i class="fa-solid fa-arrow-up"></i></span> Pulsa la flecha que ves en pantalla.</li>
+            <li><span class="regular bg-primary"><i class="fa-solid fa-minus"></i></span> Pulsa la barra espaciadora.</li>
+            <li><span class="regular bg-primary"><i class="fa-solid fa-pause"></i></span> No pulses nada.</li>  
+            <li><span class="regular bg-primary"><i class="fa-solid fa-arrows-left-right"></i></span> Pulsa ambas teclas a la vez.</li>
+            <li><span class="regular bg-danger"><i class="fa-solid fa-arrow-up"></i></span> Pulsa la dirección contraria.</li>      
+        </ul>
         <button class="btn btn-primary" onclick="startGame()">Iniciar Juego</button>
     </div>
+    
 
     <div id="game-container" style="display: none;">
         <p>Puntuación: <span id="score">0</span></p>

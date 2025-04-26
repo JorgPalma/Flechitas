@@ -9,10 +9,28 @@ body {
     font-family: Arial, sans-serif;
   }
   
-  h1 {
+  h1, h2 {
     margin-bottom: 10px;
     font-weight: bolder;
     color: whitesmoke;
+  }
+
+  ul {
+    list-style: none;
+    color: whitesmoke;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+  
+  .regular {
+    display: inline-block;
+    text-align: center;
+    font-size: 18px;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
   }
   
   p {
@@ -20,6 +38,7 @@ body {
     margin-bottom: 20px;
     color: whitesmoke;
   }
+
 
   #game-container{
     display: flexbox;
