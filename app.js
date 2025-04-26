@@ -11,6 +11,7 @@ const arrows = [
 ];
 
 const scoreElement = document.getElementById("score");
+const scoreFinal = document.getElementById("scorefinal");
 const button = document.getElementById("arrow-button");
 const arrowIcon = document.getElementById("arrow-icon");
 const gameOverElement = document.getElementById("game-over");
@@ -81,8 +82,9 @@ function increaseScore() {
 }
 
 function showGameOver() {
-  gameOverElement.style.display = "block";
-  gameContainer.style.display = "none";
+    gameOverElement.style.display = "block";
+    scoreFinal.textContent = score ;
+    gameContainer.style.display = "none";
 }
 
 function resetGame() {
